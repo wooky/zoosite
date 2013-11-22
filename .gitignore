@@ -1,3 +1,5 @@
 *.save
 pla/
 news/ckeditor
+old
+old/
