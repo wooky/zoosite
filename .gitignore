@@ -1,5 +1,7 @@
 *.save
-pla/
+pla/*
+!pla/news.zip
 news/ckeditor
-old
+exams/files
+events/calendar
 old/

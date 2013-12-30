@@ -4,8 +4,7 @@ try
 	$db = new PDO("sqlite:../pla/news");
 	if(@$_GET['article'] && $_GET['article'] != "")
 	{
-		$query = (@$_SESSION['member']) ? "select * from article where id=?" : "select * from article where id=? and private is null";
-		$sth = $db->prepare($query);
+		$sth = $db->prepare("select * from article where id=?" . (@$_SESSION['member'] ? "" : " and private is null"));
 		$sth->bindValue(1,$_GET['article'],PDO::PARAM_INT);
                 $sth->execute();
                 $result = $sth->fetch(PDO::FETCH_ASSOC);
@@ -80,7 +79,8 @@ if(@$_GET['article'])
 	<?php }
 } else {
 	echo '<div class="supertitle">ZOO NEWS</div>';
-	echo '<b><a href="editor.php">Create a New Article</a></b><hr>';
-	fullParse($db->query("select * from article order by id desc")->fetchAll(PDO::FETCH_ASSOC));
+	if(@$_SESSION['member'])
+		echo '<b><a href="editor.php">Create a New Article</a></b><hr>';
+	fullParse($db->query("select * from article " . (@$_SESSION['member'] ? "" : "where private is null")  . " order by id desc")->fetchAll(PDO::FETCH_ASSOC));
 }
 footon();

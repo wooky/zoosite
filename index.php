@@ -1,16 +1,16 @@
 <?php require_once('res/template.php');
 require_once('news/util.php');
-headon();?>
-<div class="supertitle">WELCOME TO THE ZOO HOMEPAGE!</div>
-<p>Welcome to the University of Calgary's Electrical, Computer, and Software Engineering Student Society (Zoo)! As you can see, this page is under
-construction. This, of course, should surprise nobody as the previous attempt at getting this website to be of any use was never complete. Have
-fun looking around the current design and seeing how blatantly stolen it is. Have fun!</p>
-<p>If you wish to see the old website design for some reason (e.g. because you're curious/insane/really insane), <a href="/old/page-home.htm">go here</a>.</p>
-<hr>
-<div class="supertitle">LATEST NEWS</div>
-<?php try
-{
+headon();
+try {
 	$db = new PDO("sqlite:pla/news");
+} catch(PDOException $e) {
+	echo $e->getMessage();
+}
+echo '<div class="supertitle">WELCOME TO THE ZOO HOMEPAGE!</div>';
+staticText($db,"homepage");
+echo '<hr><div class="supertitle">LATEST NEWS</div>';
+try
+{
 	$query = (@$_SESSION['member']) ? "select * from article order by id desc limit 6" :
 		"select * from article where private is null order by id desc limit 3";
 	$sth = $db->prepare($query);

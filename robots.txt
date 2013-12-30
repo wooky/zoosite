@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /exams/
+Disallow: /pla/
+Disallow: /res/
+Disallow: /casing.php
+Disallow: /phpinfo.php
