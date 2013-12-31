@@ -33,7 +33,7 @@ function sub()
 <input type="text" name="title" id="title" size="53" style="font-size:18pt;" value="<?php echo @$result['title'];?>"></div>
 <textarea name="editor" id="editor"><?php echo @$result['content'];?></textarea>
 <label><input type="checkbox" name="private" <?php if(@$result['private']) echo "checked"; ?>> Privatize the article (i.e. make it only visible to Zoo council members)</label></form>
-<h2>Remember to hit the <span style="background-image:url(http://zoo.ucalgary.ca/news/ckeditor/plugins/icons.png?t=D9EF);background-position:0 -1680px;background-size:auto;width:16px;height:16px;display:inline-block">&nbsp;</span>Save button to publish your article!</h2>
+<h2>Remember to hit the <span style="background-image:url(http://zoo.ucalgary.ca/news/ckeditor/skins/moono/icons.png);background-position:0 -1704px;background-size:auto;width:16px;height:16px;display:inline-block">&nbsp;</span>Save button to publish your article!</h2>
 <script type="text/javascript">CKEDITOR.replace('editor');</script></body></html>
 <?php footon();
 }

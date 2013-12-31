@@ -6,3 +6,5 @@ exams/files
 events/calendar
 old/
 casing.php
+contact/*.jpg
+!contact/nopic.jpg

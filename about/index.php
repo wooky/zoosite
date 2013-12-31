@@ -6,9 +6,7 @@ try
 } catch(PDOException $e) {
 	echo $e->getMessage();
 }
-echo '<div class="supertitle">About Zoo</div>';
+echo '<div class="supertitle">ABOUT ZOO</div>';
 staticText($db,"aboutzoo");
-echo '<hr><div class="smallertitle">Message from the President</div>';
-staticText($db,"prezmsg");
 footon();
 ?>
