@@ -1,4 +1,5 @@
 *.save
+*.save.*
 pla/*
 !pla/news.zip
 news/ckeditor

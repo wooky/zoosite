@@ -1,7 +1,7 @@
 <?php session_start();
-if(!@$_SESSION['member'] || $_SESSION['member'] == "")
+if(!isset($_SESSION['member']) && !isset($_SESSION['payer']) && !isset($_SESSION['nonpayer']))
 {
-	if(!@$_GET['ticket'] || $_GET['ticket'] == "")
+	if(!isset($_GET['ticket']))
 		header("Location: https://cas.ucalgary.ca/cas/login?service=http://zoo.ucalgary.ca/admin/&ca.ucalgary.authent.mustpost=true");
 	else
 	{
@@ -22,18 +22,26 @@ if(!@$_SESSION['member'] || $_SESSION['member'] == "")
 		try
 		{	
 			$db = new PDO("sqlite:../pla/news");
-			$sth = $db->prepare("select id,it_uname,pla_auth from member where it_uname=?");
+			$sth = $db->prepare("select id,it_uname,pla_auth,rank from member where it_uname=?");
 			$sth->bindValue(1,$subelem,PDO::PARAM_STR);
 			$sth->execute();
 			$result = $sth->fetch(PDO::FETCH_ASSOC);
 			if($result['it_uname'] != $subelem)
-				die("You are not a member of Zoo! If this is an error, contact one of the Zoo members or the Super Admin");
-			$_SESSION['member'] = $result['id'];
-			$_SESSION['pla_auth'] = $result['pla_auth'];
+				$_SESSION['nonpayer'] = (string)$subelem;
+			else
+			{
+				if($result['rank'])
+					$_SESSION['member'] = $result['id'];
+				else
+					$_SESSION['payer'] = $result['id'];
+				$_SESSION['pla_auth'] = $result['pla_auth'];
+			}
 			header('Location: /');
 		} catch(PDOException $e) {
 			die("A database error ocurred: " . $e->getMessage());
 		}
 	}
-}else
+}elseif(isset($_SESSION['member']))
 	header("Location: panel.php");
+else
+	header("Location: /");
