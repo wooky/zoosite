@@ -52,5 +52,5 @@ function parseFilename(fname)
 function fullParse(elem,link)
 {
 	old = elem.innerHTML;
-	elem.innerHTML = '<a' + (link ? ' href="get.php?f=' + old + '"' : '') + '>' + parseFilename(old) + '</a>';
+	elem.innerHTML = '<a' + (link ? ' target="_blank" href="get.php?f=' + old + '"' : '') + '>' + parseFilename(old) + '</a>';
 }

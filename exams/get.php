@@ -1,5 +1,7 @@
 <?php session_start();
-//Logic here to check if the user is logged in, a member, or has not exceeded the allowed max amt of files
+if(!isset($_SESSION['member']) && !isset($_SESSION['payer']) && !isset($_SESSION['nonpayer']))
+	header('Location: /exams/');
+
 $fname = str_replace("/","",$_GET['f']);
 if(!file_exists("files/$fname"))
 {
@@ -9,7 +11,15 @@ if(!file_exists("files/$fname"))
 	footon();
 	exit;
 }
-//Logic here to subtract the amount of exams a user can view, if applicable
+
+if(isset($_SESSION['nonpayer']))
+{
+	$nonpayer = str_replace('.','_',$_SESSION['nonpayer']);
+	if(isset($_COOKIE[$nonpayer]) && $_COOKIE[$nonpayer] <= 0)
+		header('Location: /exams/');
+	setcookie($nonpayer,(isset($_COOKIE[$nonpayer]) ? $_COOKIE[$nonpayer]-1 : 2),strtotime('tomorrow'));
+}
+
 header("Content-type: application/pdf");
 header("Content-Disposition: inline; filename=$fname");
 @readfile("files/$fname");

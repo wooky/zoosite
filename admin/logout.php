@@ -3,5 +3,5 @@ if(!@$_SESSION['member'])
 	header("Location: /");
 $_SESSION = array();
 session_destroy();
-header("Location: /");
+header("Location: " . $_SERVER['HTTP_REFERER']);
 ?>

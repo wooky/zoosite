@@ -2,7 +2,10 @@
 if(!isset($_SESSION['member']) && !isset($_SESSION['payer']) && !isset($_SESSION['nonpayer']))
 {
 	if(!isset($_GET['ticket']))
-		header("Location: https://cas.ucalgary.ca/cas/login?service=http://zoo.ucalgary.ca/admin/&ca.ucalgary.authent.mustpost=true");
+	{
+		$_SESSION['last_url'] = $_SERVER['HTTP_REFERER'];
+		header("Location: https://cas.ucalgary.ca/cas/login?service=http://zoo.ucalgary.ca/admin/");
+	}
 	else
 	{
 		$cont = "<item xmlns:cas='http://schemas.google_apps_sync.com'>" .
@@ -36,7 +39,10 @@ if(!isset($_SESSION['member']) && !isset($_SESSION['payer']) && !isset($_SESSION
 					$_SESSION['payer'] = $result['id'];
 				$_SESSION['pla_auth'] = $result['pla_auth'];
 			}
-			header('Location: /');
+			if(isset($_SESSION['last_url']))
+				header('Location: ' . $_SESSION['last_url']);
+			else
+				header('Location: /');
 		} catch(PDOException $e) {
 			die("A database error ocurred: " . $e->getMessage());
 		}
