@@ -16,16 +16,18 @@ if(isset($_SESSION['member']) || (!isset($_SESSION['payer']) && !isset($_SESSION
 
 $nonpayer = isset($_SESSION['nonpayer']) ? str_replace('.','_',$_SESSION['nonpayer']) : null;
 if(isset($_SESSION['member']))
-	echo "<br>The following is displayed to logged in non-members (i.e. those who haven't paid their dues):";
+	echo "<br>The following is displayed to logged in non-members (i.e. those who haven't paid their dues):<br>(Use %times% to indicate how many exams the user can view)";
 if(isset($_SESSION['member']) || ($nonpayer && (!isset($_COOKIE[$nonpayer]) || $_COOKIE[$nonpayer] > 0)))
 	staticText($db,"examlimit",array('%times%',(isset($_COOKIE[$nonpayer]) ? $_COOKIE[$nonpayer] : 3)));
 
 if(isset($_SESSION['member']))
-	echo '<br>The following is displayed to non-members who have exceeded their daily quota:';
+	echo '<br>The following is displayed to non-members who have exceeded their daily quota:<br>(Use %time_remaining% to indicate how much time is left)';
 if(isset($_SESSION['member']) || ($nonpayer && (isset($_COOKIE[$nonpayer]) && @$_COOKIE[$nonpayer] <= 0)))
 	staticText($db,'examexceed',array('%time_remaining%',date_diff(new DateTime('now'),new DateTime('tomorrow'))->format('%h:%I:%S')));
 
 echo "<hr>";
+if(isset($_SESSION['member']))
+	echo '(<a href="upload.php">Upload Exams</a>)';
 $res = $db->query("select name as name,description as value from examnames")->fetchAll(PDO::FETCH_KEY_PAIR);
 if($handle=opendir('./files'))
 {
@@ -68,8 +70,7 @@ if($handle=opendir('./files'))
 				echo "<ul>";
 			}
 
-			//echo "<li><a" . (@$_SESSION['member'] || @$_SESSION['payer'] || @$_SESSION['nonpayer'] ? " href='get.php?f=$entry' target='_blank'" : "") . ">" . parseFilename($entry)  . "</a>";
-			echo "<li><span class='examelem'>$entry</span>" . (isset($_SESSION['member']) ? " (<a href='#' onclick='deleteExam(\"$entry\");return false'>delete</a>)" : '');
+			echo "<li><span class='examelem'>$entry</span> (" . round(filesize("./files/$entry")/1024) . " KB)" . (isset($_SESSION['member']) ? " &middot; (<a href='#' onclick='moveExam(\"$entry\");return false'>rename</a>) &middot; (<a href='#' onclick='deleteExam(\"$entry\");return false'>delete</a>)" : '');
 		}
 	}
 	closedir($handle);

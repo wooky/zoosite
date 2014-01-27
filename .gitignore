@@ -1,7 +1,7 @@
 *.save
 *.save.*
 pla/*
-!pla/news.zip
+!pla/news.7z
 news/ckeditor
 exams/files
 events/calendar

@@ -6,6 +6,9 @@ function parseFilename(fname)
 		return false;
 
 	var n = fname.substr(0,fname.length-4).split("_");
+	if(n.length < 3)
+		return false;
+	
 	var result = n[0].toUpperCase();
 
 	//Get year and session
@@ -52,5 +55,8 @@ function parseFilename(fname)
 function fullParse(elem,link)
 {
 	old = elem.innerHTML;
-	elem.innerHTML = '<a' + (link ? ' target="_blank" href="get.php?f=' + old + '"' : '') + '>' + parseFilename(old) + '</a>';
+	nova = parseFilename(old);
+	if(nova == false)
+		nova = old;
+	elem.innerHTML = '<a' + (link ? ' target="_blank" href="get.php?f=' + old + '"' : '') + '>' + nova + '</a>';
 }
